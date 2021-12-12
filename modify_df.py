@@ -1,16 +1,27 @@
+# utilities
 import pandas as pd 
 import numpy as np
 import datetime
+import random
+from datetime import datetime as dt
+from pandas import DataFrame
+import warnings
 
-# co2_cols = ['Decimal Date','Trend']
-# co2 = co2.drop(co2_cols,axis=1)
+co2 = pd.read_csv('co2-avg_montly.csv')
+sea_level = pd.read_csv('avg_sea_level.csv')
+sea_level.rename(columns = {'Time':'Date'},inplace=True)
+anomaly_temperature = pd.read_csv('anomalies_temp.csv')
 
-# sea_cols = ['Uncertanty']
-# sea_level = sea_level.drop(sea_cols,axis=1)
+co2_cols = ['Decimal Date','Trend']
+co2 = co2.drop(co2_cols,axis=1)
 
-# anomaly_temperature.drop(anomaly_temperature[anomaly_temperature['Source'] == 'GCAG'].index, inplace = True)
-# anomaly_cols = ['Source']
-# anomaly_temperature = anomaly_temperature.drop(anomaly_cols,axis=1)
+sea_cols = ['Uncertanty']
+sea_level = sea_level.drop(sea_cols,axis=1)
+
+
+anomaly_temperature.drop(anomaly_temperature[anomaly_temperature['Source'] == 'GCAG'].index, inplace = True)
+anomaly_cols = ['Source']
+anomaly_temperature = anomaly_temperature.drop(anomaly_cols,axis=1)
 
 # function to create date
 def create_date(start_date,end_date,month):
@@ -20,7 +31,7 @@ def create_date(start_date,end_date,month):
 ''''
 Now that we have the list of the dates i can add them to the dataframes and then create the values
 '''
-# co2 date are until 2018-07
+#co2 date are until 2018-07
 year_start = 2018
 year_end = 2021
 co2_date = create_date(year_start,year_end,month='aug')
@@ -40,19 +51,16 @@ anomalyt_date = create_date(year_start,year_end,month='jan')
 Now it's time to add the values to the new dates where there are the NA
 '''
 sea_val = []
-for s in np.arange(9, 14, 0.05): #starting from 9 increase for each month of 0.05
-    if len(sea_val)<= 95: #num of nan in sea_level
-        sea_val.append(round(s,1))
+for s in range(96): #num of nan in sea_level
+    sea_val.append(round(random.uniform(7.5,14.8), 2))
 
 co2_val=[]
-for c in np.arange(400,432, 0.8):
-    if len(co2_val)<=40:
-        co2_val.append(round(c,3))
+for c in range(40): #num of nan in co2
+    co2_val.append(round(random.uniform(400.0,431.8), 2))
 
 anomaly_val =[]
-for a in np.arange(1,3,0.03):
-    if len(anomaly_val)<=59:
-        anomaly_val.append(round(a,2))
+for a in range(59): #num of nan in anomalies_temp
+    anomaly_val.append(round(random.uniform(1.0,3.2), 2))
 
 
 ''''
@@ -68,11 +76,9 @@ for d,v in zip(anomalyt_date,anomaly_val):
     anomaly_temperature= anomaly_temperature.append({'Date':d,'Anomalies_Land_Ocean_Temperature':v}, ignore_index=True)
 
 
-
 '''
 Save to csv
 '''
-
 co2.to_csv('co2.csv',index=False)
 sea_level.to_csv('sea_level.csv',index=False)
 anomaly_temperature.to_csv('anomalies_temperature.csv',index=False)
