@@ -2,6 +2,9 @@
 
 Project for the exam of Big Data for Official Statistics
 
+
+In the data repository there are the .csv of the original data found on the following sources + the .csv of the data modified by me in order to have data until the 2021.
+
 Data sources:
 
 - https://datahub.io/core/global-temp#readme
