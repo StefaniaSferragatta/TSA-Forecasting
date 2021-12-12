@@ -1,4 +1,4 @@
-## Time series analysis and forcasting using ARIMA
+## Time series analysis and forcasting using VARMA
 
 Project for the exam of Big Data for Official Statistics
 
