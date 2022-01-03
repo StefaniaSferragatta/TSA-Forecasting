@@ -1,3 +1,10 @@
+TO DO:
+
+- KERAS
+- PRESENTATION
+- DISCORSO
+----------------------------------------------------------------------------
+
 ## Time series analysis and forcasting 
 
 Project for the exam of Big Data for Official Statistics
