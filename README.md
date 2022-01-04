@@ -1,6 +1,7 @@
 TO DO:
 
-- KERAS
+- KERAS plot color and lables
+- LSTM_cc comment
 - PRESENTATION
 - DISCORSO
 ----------------------------------------------------------------------------
