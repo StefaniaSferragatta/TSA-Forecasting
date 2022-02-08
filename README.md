@@ -3,7 +3,7 @@
 Project for the exam of Big Data for Official Statistics
 
 
-In the data repository there are the .csv of the original data found on the following sources:
+In the data repository there are the .csv of the data found on the following sources:
 
 - https://datahub.io/core/global-temp#readme
 - https://datahub.io/core/sea-level-rise
