@@ -35,7 +35,6 @@ def timeseries_to_supervised(data: pd.core.series.Series, lag=1):
 
     It returns a new dataframe.
 	'''
-
     df = DataFrame(data)
     columns = [df.shift(i) for i in range(1, lag+1)]
     columns.append(df)
