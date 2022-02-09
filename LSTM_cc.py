@@ -103,11 +103,12 @@ def fit_lstm(train: np.ndarray, batch_size: int, nb_epoch: int, neurons: int):
 	and applies the defined model to the data and return it.	
 	'''
 	X, y = train[:, 0:-1], train[:, -1]
-	X = X.reshape(X.shape[0], 1, X.shape[1])
+	X = X.reshape(X.shape[0], 1, X.shape[1]) #LSTM layer expects input to be in a matrix with the dimensions: [samples, time steps, features].
+	# frame the problem as each time step in the original sequence is one separate sample, with one timestep and one feature
 	model = Sequential()
 	model.add(LSTM(neurons, batch_input_shape=(batch_size, X.shape[1], X.shape[2]), stateful=True))
 	model.add(Dense(1))
-	model.compile(loss='mean_squared_error', optimizer='adam')
+	model.compile(loss='mean_squared_error', optimizer='adam')  #Adam optimization is a stochastic gradient descent method that is based on adaptive estimation of first-order and second-order moments.
 	for i in range(nb_epoch):
 		model.fit(X, y, epochs=1, batch_size=batch_size, verbose=0, shuffle=False)
 		model.reset_states()
@@ -122,9 +123,9 @@ def forecast_lstm(model: Sequential, batch_size: int, X: np.ndarray):
 
 	and makes a one step forecast. It returns the forecasted values.
 	'''
-	X = X.reshape(1, 1, len(X))
+	X = X.reshape(1, 1, len(X)) #the predict fuction requires a 3D numpy array. 
 	yhat = model.predict(X, batch_size=batch_size)
-	return yhat[0,0]
+	return yhat[0,0] #array of predictions
 
 def robust_lstm(train_scaled: np.ndarray,test_scaled: np.ndarray,scaler: MinMaxScaler,raw_values: np.ndarray):
 	'''
@@ -135,8 +136,7 @@ def robust_lstm(train_scaled: np.ndarray,test_scaled: np.ndarray,scaler: MinMaxS
 	- the dataset's values
 
 	and performs the model fitting and the walk forward validation into a loop, doing it for 10 times.
-	At each iteration the RMSE computed is stored and, in the end, returned.
-	It's used to plot its distribution.
+	At each iteration the RMSE computed is stored and, in the end, returned. It's used to plot its distribution.
 	'''	
 	# repeat experiment
 	repeats = 10
@@ -151,7 +151,7 @@ def robust_lstm(train_scaled: np.ndarray,test_scaled: np.ndarray,scaler: MinMaxS
 		predictions = list()
 		for i in range(len(test_scaled)):
 			# make one-step forecast
-			X, y = test_scaled[i, 0:-1], test_scaled[i, -1]
+			X, y = test_scaled[i, 0:-1], test_scaled[i, -1] #X is an array of 1 value that is the observation at the previous step
 			yhat = forecast_lstm(lstm_model, 1, X) #yhat = y
 			# invert scaling
 			yhat = invert_scale(scaler, X, yhat)
